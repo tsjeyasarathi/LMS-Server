@@ -1,0 +1,30 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>LMS | User profile</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div style="padding: 50px;">
+			<div class="text-center">
+				<h2>Profile Page</h2>
+				<a href="/logout" class="btn btn-default">Logout</a>
+			</div>
+			<br/>
+            <div class="well">
+				<strong>id</strong>: <%= user.google.id %><br>
+				<strong>email</strong>: <%= user.google.email %><br>
+				<strong>name</strong>: <%= user.google.name %>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
