@@ -1,8 +1,8 @@
 // config/auth.js
 module.exports = {
     'googleAuth' : {
-        'clientID'      : '153986291672-7l1h5k1fjk3qudb1fc2o8ippd8fn9jb5.apps.googleusercontent.com',
-        'clientSecret'  : 'IxUJ_tORh7-Db4KHTqhA8Cr9',
+        'clientID'      : '70247361893-ud58d3llj2u3bigae47o6je3jes5vkhg.apps.googleusercontent.com',
+        'clientSecret'  : 'i5U416fj_D61FDX_i_q-CCzJ',
         'callbackURL'   : 'http://localhost:8080/auth/google/callback'
     }
 };

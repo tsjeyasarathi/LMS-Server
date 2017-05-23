@@ -5,7 +5,7 @@ var LocalStrategy    = require('passport-local').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 // load up the user model
-var User       = require('../app/models/user');
+var User = require('../app/models/user');
 
 // load the auth variables
 var configAuth = require('./auth');
@@ -31,18 +31,24 @@ module.exports = function(passport) {
     },
     function(token, refreshToken, profile, done) {
         process.nextTick(function() {
+            console.log('Token =>', token);
+            console.log('refreshToken =>', refreshToken);
+            console.log('Profile =>', profile);
             // try to find the user based on their google id
             User.findOne({ 'google.id' : profile.id }, function(err, user) {
-                if (err)
+                if (err) {
+                    console.log('Error =>', err);
                     return done(err);
-
+                }
+                    
                 if (user) {
-
+                    console.log('User =>', user);
                     // if a user is found, log them in
                     return done(null, user);
                 } else {
+                    console.log('New User =>');
                     // if the user isnt in our database, create a new user
-                    var newUser          = new User();
+                    var newUser = new User();
 
                     // set all of the relevant information
                     newUser.google.id    = profile.id;
