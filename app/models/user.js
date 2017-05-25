@@ -8,7 +8,7 @@ var userSchema = new Schema({
    _id:String,
    email:String,
    last_name:String,
-   first_nameone:String,
+   first_name:String,
    token:String
 });
 

@@ -18,7 +18,15 @@ function handleGetUsersRequest(req,res) {
 };
 
 function handleGetUserRequest(req,res) {
-	console.log(req.query.token);
+	console.log(req.params);
+	user.findOne({_id: req.params.id}, { token: 0 },function(err,usr) {
+		console.log(usr);
+
+		if (!usr) {
+
+		}
+		res.json(200, usr);
+	});
 };
 
 function handleUpdateUserRequest(req,res) {

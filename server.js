@@ -1,7 +1,7 @@
 // server.js
 var express  = require('express');
 var app      = express();
-var port     = process.env.PORT || 8080;
+var port     = process.env.PORT || 4040;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -32,6 +32,7 @@ var configAuth = require('./config/auth.js');
  */
 var UserHandler = require('./handlers/UserHandler');
 var AuthHandler = require('./handlers/AuthHandler');
+var Actions = require('./handlers/Actions');
 
 /**
  * set up our express application
@@ -54,7 +55,9 @@ app.use(flash());
  */
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, Authorization, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
   next();
 });
 
@@ -76,7 +79,8 @@ db.once('open', function() {
 
 var handlers = {
 	user: new UserHandler(),
-	auth: new AuthHandler()
+	auth: new AuthHandler(),
+    action: new Actions()
 };
 
 /**
@@ -88,12 +92,13 @@ var handlers = {
 passport.use(new GoogleStrategy({
     clientID: configAuth.googleAuth.clientID,
     clientSecret: configAuth.googleAuth.clientSecret,
-    callbackURL: "http://localhost:8080/auth/google/callback"
+    callbackURL: "http://localhost:4040/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
 
+      console.log(profile);
     //check user table for anyone with an email of Google
-        Users.findOne({ email: profile._json.emails[0]['value'] }, function(err, user) {
+        Users.findOne({ email: profile._json.email }, function(err, user) {
             if (err) {
                 return done(err);
             }
