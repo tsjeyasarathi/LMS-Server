@@ -32,7 +32,7 @@ var configAuth = require('./config/auth.js');
  */
 var UserHandler = require('./handlers/UserHandler');
 var AuthHandler = require('./handlers/AuthHandler');
-var Actions = require('./handlers/Actions');
+var ActionsHandler = require('./handlers/ActionsHandler');
 
 /**
  * set up our express application
@@ -47,18 +47,18 @@ app.use(bodyParser.json())
  */
 app.use(session({ secret: 'lmss3cr3tppanoiss3s',  resave: true, saveUninitialized: true })); // session secret
 app.use(passport.initialize());
-app.use(passport.session()); 
-app.use(flash()); 
+app.use(passport.session());
+app.use(flash());
 
 /**
  * Add headers
  */
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
     res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, Authorization, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-  next();
+    next();
 });
 
 /**
@@ -69,18 +69,17 @@ var Users = require('./app/models/user');
 mongoose.connect(configDB.url);
 
 var db = mongoose.connection;
-var dbCollection = db.collections;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function() {
-  console.log("we're connected!");
+    console.log("we're connected!");
 });
 
 var handlers = {
-	user: new UserHandler(),
-	auth: new AuthHandler(),
-    action: new Actions()
+    user: new UserHandler(),
+    auth: new AuthHandler(),
+    actions: new ActionsHandler()
 };
 
 /**
@@ -90,14 +89,14 @@ var handlers = {
  * profile), and invoke a callback with a user object.
  */
 passport.use(new GoogleStrategy({
-    clientID: configAuth.googleAuth.clientID,
-    clientSecret: configAuth.googleAuth.clientSecret,
-    callbackURL: "http://localhost:4040/auth/google/callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
+        clientID: configAuth.googleAuth.clientID,
+        clientSecret: configAuth.googleAuth.clientSecret,
+        callbackURL: "http://localhost:4040/auth/google/callback"
+    },
+    function(accessToken, refreshToken, profile, done) {
 
-      console.log(profile);
-    //check user table for anyone with an email of Google
+        console.log(profile);
+        //check user table for anyone with an email of Google
         Users.findOne({ email: profile._json.email }, function(err, user) {
             if (err) {
                 return done(err);
@@ -124,31 +123,11 @@ passport.use(new GoogleStrategy({
                 });
             }
         });
-  }
+    }
 ));
 
 routes.setup(app,handlers);
 
 app.listen(port, function() {
-	console.log('LMS sever listens on port ' + port);
+    console.log('LMS sever listens on port ' + port);
 });
-
-//app.post('/user/courseUpd', function (req, res) {
-//    
-//  console.log('User pgres');
-//  data = req.body
-//  data['timestamp']= new Date();
-//  console.log(data);  
-//    
-//  UserProgress.collection.insert(data ,onInsert);
-//    function onInsert(err, docs) {
-//        if (err) {
-//            console.log(err);
-//        } else {
-//            console.info('%d potatoes were successfully stored.', docs.length);
-//        }
-//    }
-//    
-////  collection.insertOne({_id:"abc", user:"David"} );
-//  res.send('Hello World!');
-//})

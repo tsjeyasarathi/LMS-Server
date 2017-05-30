@@ -20,8 +20,6 @@ function handleGetUsersRequest(req,res) {
 function handleGetUserRequest(req,res) {
 	console.log(req.params);
 	user.findOne({_id: req.params.id}, { token: 0 },function(err,usr) {
-		console.log(usr);
-
 		if (!usr) {
 
 		}
