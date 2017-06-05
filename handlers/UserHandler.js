@@ -23,18 +23,18 @@ function handleGetUserRequest(req,res) {
 		if (!usr) {
 
 		}
-		res.json(200, usr);
+		res.status(200).json(usr);
 	});
 };
 
 function handleUpdateUserRequest(req,res) {
 	var dummy = {text: "dummy get"};
-	res.json = (200, dummy);
+	res.status(200).json(dummy);
 };
 
 function handleDeleteUserRequest(req,res) {
 	var dummy = {text: "dummy get"};
-	res.json = (200, dummy);
+	res.status(200).json(dummy);
 };
 
 module.exports = UserHandler;

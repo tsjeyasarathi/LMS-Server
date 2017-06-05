@@ -10,6 +10,7 @@ function setup(app,handlers) {
 	app.get('/user/levelupd/:user_id/:course_id/:level',  handlers.actions.userLevelStartTime);
 	app.post('/user/levelupd',handlers.actions.userLevel);
 	app.post('/user/countUpd',handlers.actions.resourseLinkTrack);
+	app.post('/user/stepUpd',handlers.actions.stepTracking);
 };
 
 exports.setup = setup;
